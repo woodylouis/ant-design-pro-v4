@@ -20,7 +20,7 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
 import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
-import logo from '../assets/logo.svg';
+import logo from '@/assets/logo.svg';
 
 const noMatch = (
   <Result
@@ -85,9 +85,30 @@ const defaultFooterDom = (
   />
 );
 
+const links = [
+  {
+    key: 'fastersoft',
+    title: '东华发思特',
+    href: 'http://www.fastersoft.com.cn/',
+    blankTarget: true,
+  },
+  {
+    key: 'donghua',
+    title: '东华软件',
+    href: 'http://www.dhcc.com.cn/',
+    blankTarget: true,
+  },
+];
+
+const copyright = 'Fastersoft';
+
 const footerRender: BasicLayoutProps['footerRender'] = () => {
   if (!isAntDesignPro()) {
-    return defaultFooterDom;
+    return (
+      <>
+        <DefaultFooter links={links} copyright={copyright} />
+      </>
+    );
   }
 
   return (

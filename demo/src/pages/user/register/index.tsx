@@ -48,6 +48,7 @@ interface RegisterProps {
 
 export interface UserRegisterParams {
   mail: string;
+  username: string;
   password: string;
   confirm: string;
   mobile: string;
@@ -55,11 +56,7 @@ export interface UserRegisterParams {
   prefix: string;
 }
 
-const Register: FC<RegisterProps> = ({
-  submitting,
-  dispatch,
-  userAndregister,
-}) => {
+const Register: FC<RegisterProps> = ({ submitting, dispatch, userAndregister }) => {
   const [count, setcount]: [number, any] = useState(0);
   const [visible, setvisible]: [boolean, any] = useState(false);
   const [prefix, setprefix]: [string, any] = useState('86');
@@ -182,7 +179,22 @@ const Register: FC<RegisterProps> = ({
             },
           ]}
         >
-          <Input size="large" placeholder={formatMessage({ id: 'userandregister.email.placeholder' })} />
+          <Input
+            size="large"
+            placeholder={formatMessage({ id: 'userandregister.email.placeholder' })}
+          />
+        </FormItem>
+        <FormItem
+          name="username"
+          className={form.getFieldValue('username')}
+          rules={[
+            {
+              required: true,
+              message: formatMessage({ id: 'userandregister.userName.required' }),
+            },
+          ]}
+        >
+          <Input size="large" placeholder="用户名" />
         </FormItem>
         <Popover
           getPopupContainer={node => {
@@ -244,61 +256,7 @@ const Register: FC<RegisterProps> = ({
             placeholder={formatMessage({ id: 'userandregister.confirm-password.placeholder' })}
           />
         </FormItem>
-        <InputGroup compact>
-          <Select size="large" value={prefix} onChange={changePrefix} style={{ width: '20%' }}>
-            <Option value="86">+86</Option>
-            <Option value="87">+87</Option>
-          </Select>
-          <FormItem
-            style={{ width: '80%' }}
-            name="mobile"
-            rules={[
-              {
-                required: true,
-                message: formatMessage({ id: 'userandregister.phone-number.required' }),
-              },
-              {
-                pattern: /^\d{11}$/,
-                message: formatMessage({ id: 'userandregister.phone-number.wrong-format' }),
-              },
-            ]}
-          >
-            <Input
-              size="large"
-              placeholder={formatMessage({ id: 'userandregister.phone-number.placeholder' })}
-            />
-          </FormItem>
-        </InputGroup>
-        <Row gutter={8}>
-          <Col span={16}>
-            <FormItem
-              name="captcha"
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({ id: 'userandregister.verification-code.required' }),
-                },
-              ]}
-            >
-              <Input
-                size="large"
-                placeholder={formatMessage({ id: 'userandregister.verification-code.placeholder' })}
-              />
-            </FormItem>
-          </Col>
-          <Col span={8}>
-            <Button
-              size="large"
-              disabled={!!count}
-              className={styles.getCaptcha}
-              onClick={onGetCaptcha}
-            >
-              {count
-                ? `${count} s`
-                : formatMessage({ id: 'userandregister.register.get-verification-code' })}
-            </Button>
-          </Col>
-        </Row>
+
         <FormItem>
           <Button
             size="large"

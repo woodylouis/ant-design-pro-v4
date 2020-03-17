@@ -98,6 +98,12 @@ export default {
           component: './user/login',
         },
         {
+          name: 'result',
+          icon: 'smile',
+          path: '/user/register-result',
+          component: './user/register/result',
+        },
+        {
           name: 'register',
           icon: 'smile',
           path: '/user/register',
@@ -194,7 +200,7 @@ export default {
         resourcePath: string;
       },
       _: string,
-      localName: string
+      localName: string,
     ) => {
       if (
         context.resourcePath.includes('node_modules') ||

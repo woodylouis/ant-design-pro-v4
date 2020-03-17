@@ -35,6 +35,22 @@ const UserLayout: React.FC<UserLayoutProps> = props => {
     breadcrumb,
     ...props,
   });
+  const links = [
+    {
+      key: 'fastersoft',
+      title: '东华发思特',
+      href: 'http://www.fastersoft.com.cn/',
+      blankTarget: true,
+    },
+    {
+      key: 'donghua',
+      title: '东华软件',
+      href: 'http://www.dhcc.com.cn/',
+      blankTarget: true,
+    },
+  ];
+
+  const copyright = 'Fastersoft';
   return (
     <>
       <Helmet>
@@ -51,14 +67,14 @@ const UserLayout: React.FC<UserLayoutProps> = props => {
             <div className={styles.header}>
               <Link to="/">
                 <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>Ant Design</span>
+                <span className={styles.title}>开发综合管理平台</span>
               </Link>
             </div>
-            <div className={styles.desc}>开发综合管理平台</div>
+            <div className={styles.desc}>东华发思特 - 农业农村事业部</div>
           </div>
           {children}
         </div>
-        <DefaultFooter />
+        <DefaultFooter links={links} copyright={copyright} />
       </div>
     </>
   );

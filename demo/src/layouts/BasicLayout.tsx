@@ -168,6 +168,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
     authority: undefined,
   };
+  // 更多props可以参考这里： https://github.com/ant-design/ant-design-pro-layout, 也可在defaultSettings.ts中修改参数
   return (
     <ProLayout
       logo={logo}
@@ -206,6 +207,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}
+      title="开发综合管理平台"
     >
       <Authorized authority={authorized!.authority} noMatch={noMatch}>
         {children}

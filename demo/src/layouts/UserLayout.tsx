@@ -54,7 +54,7 @@ const UserLayout: React.FC<UserLayoutProps> = props => {
                 <span className={styles.title}>Ant Design</span>
               </Link>
             </div>
-            <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
+            <div className={styles.desc}>开发综合管理平台</div>
           </div>
           {children}
         </div>

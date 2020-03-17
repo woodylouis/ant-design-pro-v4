@@ -136,7 +136,7 @@ export default {
             },
             {
               name: 'list',
-              icon: 'smile',
+              icon: 'check',
               path: '/list/basic/list',
               component: './list/basic/list',
             },
@@ -145,6 +145,12 @@ export default {
               icon: 'table',
               path: '/list',
               component: './ListTableList',
+            },
+            {
+              //name: 'success', //添加到菜单
+              // icon: 'smile',
+              path: '/result/success',
+              component: './result/success',
             },
             {
               component: './404',

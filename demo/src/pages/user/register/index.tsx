@@ -48,7 +48,6 @@ interface RegisterProps {
 
 export interface UserRegisterParams {
   mail: string;
-  username: string;
   password: string;
   confirm: string;
   mobile: string;

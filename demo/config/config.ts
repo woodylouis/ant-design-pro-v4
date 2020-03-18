@@ -107,7 +107,7 @@ export default {
           name: 'register',
           icon: 'smile',
           path: '/user/register',
-          component: './user/register',
+          component: './user/register/new',
         },
       ],
     },

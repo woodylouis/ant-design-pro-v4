@@ -45,7 +45,7 @@ const Model: ModelType = {
         //捕获异常
       } catch (e) {
         yield put({
-          type: 'registerHandle',
+          type: 'errorsHandle',
           payload: e.data, //捕获后端的错误信息
         });
       }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import {
   Form,
   Input,
@@ -11,10 +11,22 @@ import {
   Button,
   AutoComplete,
 } from 'antd';
-
+import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import styles from './style.less';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+import { StateType } from './model';
+
+export interface UserRegisterParams {
+  user: {
+    email: string;
+    username: string;
+    password: string;
+    password_confirmation: string;
+    phone: string;
+    code: string;
+  };
+}
 
 const formItemLayout = {
   labelCol: {
@@ -47,12 +59,23 @@ const tailFormItemLayout = {
   },
 };
 
-const RegistrationForm = () => {
+interface RegisterProps {
+  dispatch: Dispatch<any>;
+  userAndregister: StateType;
+  submitting: boolean;
+}
+
+const RegistrationForm: FC<RegisterProps> = ({ submitting, dispatch, userAndregister }) => {
   const [form] = Form.useForm();
   const [count, setcount]: [number, any] = useState(0);
-  const onFinish = (values: string) => {
+  const onFinish = (values: { [key: string]: any }) => {
+    dispatch({
+      type: 'userAndregister/submit',
+      payload: { ...values },
+    });
     console.log('Received values of form: ', values);
   };
+
   let interval: number | undefined;
   const onGetCaptcha = () => {
     let counts = 59;
@@ -69,84 +92,27 @@ const RegistrationForm = () => {
   return (
     <div className={styles.custom_form}>
       <Form {...formItemLayout} form={form} name="register" onFinish={onFinish} scrollToFirstError>
-        <Form.Item
-          name="username"
-          label={<span>Username</span>}
-          rules={[
-            {
-              required: true,
-              message: 'Please input your username!',
-              whitespace: true,
-            },
-          ]}
-        >
+        <Form.Item name="user[username]" label={<span>Username</span>}>
           <Input />
         </Form.Item>
-        <Form.Item
-          name="email"
-          label="E-mail"
-          rules={[
-            {
-              type: 'email',
-              message: 'The input is not valid E-mail!',
-            },
-            {
-              required: true,
-              message: 'Please input your E-mail!',
-            },
-          ]}
-        >
+        <Form.Item name="user[email]" label="E-mail">
           <Input />
         </Form.Item>
 
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
-          hasFeedback
-        >
+        <Form.Item name="user[password]" label="Password" hasFeedback>
           <Input.Password />
         </Form.Item>
 
         <Form.Item
-          name="confirm"
+          name="user[password_confirmation]"
           label="Confirm Password"
           dependencies={['password']}
           hasFeedback
-          rules={[
-            {
-              required: true,
-              message: 'Please confirm your password!',
-            },
-            ({ getFieldValue }) => ({
-              validator(rule, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve();
-                }
-
-                return Promise.reject('The two passwords that you entered do not match!');
-              },
-            }),
-          ]}
         >
           <Input.Password />
         </Form.Item>
 
-        <Form.Item
-          name="phone"
-          label="Phone Number"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your phone number!',
-            },
-          ]}
-        >
+        <Form.Item name="user[phone]" label="Phone Number">
           <Input
             // addonBefore={prefixSelector}
             style={{
@@ -158,16 +124,7 @@ const RegistrationForm = () => {
         <Form.Item label="Captcha" extra="We must make sure that your are a human.">
           <Row gutter={8}>
             <Col span={12}>
-              <Form.Item
-                name="captcha"
-                noStyle
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input the captcha you got!',
-                  },
-                ]}
-              >
+              <Form.Item name="user[code]" noStyle>
                 <Input />
               </Form.Item>
             </Col>
@@ -181,7 +138,7 @@ const RegistrationForm = () => {
           </Row>
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
+          <Button loading={submitting} type="primary" htmlType="submit">
             Register
           </Button>
         </Form.Item>

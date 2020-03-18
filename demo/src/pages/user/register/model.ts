@@ -6,6 +6,7 @@ import { fakeRegister } from './service';
 export interface StateType {
   status?: 'ok' | 'error';
   currentAuthority?: 'user' | 'guest' | 'admin';
+  errors?: any;
 }
 
 export type Effect = (
@@ -21,6 +22,7 @@ export interface ModelType {
   };
   reducers: {
     registerHandle: Reducer<StateType>;
+    errorsHandle: Reducer<StateType>;
   };
 }
 
@@ -29,15 +31,24 @@ const Model: ModelType = {
 
   state: {
     status: undefined,
+    errors: {},
   },
 
   effects: {
     *submit({ payload }, { call, put }) {
-      const response = yield call(fakeRegister, payload);
-      yield put({
-        type: 'registerHandle',
-        payload: response,
-      });
+      try {
+        const response = yield call(fakeRegister, payload);
+        yield put({
+          type: 'registerHandle',
+          payload: response,
+        });
+        //捕获异常
+      } catch (e) {
+        yield put({
+          type: 'registerHandle',
+          payload: e.data, //捕获后端的错误信息
+        });
+      }
     },
   },
 
@@ -46,6 +57,12 @@ const Model: ModelType = {
       return {
         ...state,
         status: payload.status,
+      };
+    },
+    errorsHandle(state, { payload }) {
+      return {
+        ...state,
+        errors: payload,
       };
     },
   },

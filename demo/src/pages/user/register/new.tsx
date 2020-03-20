@@ -10,13 +10,20 @@ import {
   Checkbox,
   Button,
   AutoComplete,
+  message
 } from 'antd';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import styles from './style.less';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import { StateType } from './model';
+import { router } from 'umi';
 
+interface RegisterProps {
+  dispatch: Dispatch<any>;
+  userAndregister: StateType;
+  submitting: boolean;
+}
 export interface UserRegisterParams {
   user: {
     email: string;
@@ -59,24 +66,32 @@ const tailFormItemLayout = {
   },
 };
 
-interface RegisterProps {
-  dispatch: Dispatch<any>;
-  userAndregister: StateType;
-  submitting: boolean;
-}
+
 
 const RegistrationForm: FC<RegisterProps> = ({ submitting, dispatch, userAndregister }) => {
   const [form] = Form.useForm();
   const [count, setcount]: [number, any] = useState(0);
-  const onFinish = (values: { [key: string]: any }) => {
-    dispatch({
-      type: 'userAndregister/submit',
-      payload: { ...values },
-    });
-    console.log('Received values of form: ', values);
-  };
-
   let interval: number | undefined;
+  useEffect(() => {
+    if (!userAndregister) {
+      return;
+    }
+    const account = form.getFieldValue('email');
+    if (userAndregister.status === 'ok') {
+      message.success('注册成功！');
+      router.push({
+        pathname: '/user/register-result',
+        state: {
+          account,
+        },
+      });
+    }
+  }, [userAndregister]);
+  useEffect(() => {
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
   const onGetCaptcha = () => {
     let counts = 59;
     setcount(counts);
@@ -88,6 +103,16 @@ const RegistrationForm: FC<RegisterProps> = ({ submitting, dispatch, userAndregi
       }
     }, 1000);
   };
+  const onFinish = (values: { [key: string]: any }) => {
+    dispatch({
+      type: 'userAndregister/submit',
+      payload: { ...values },
+    });
+    console.log('Received values of form: ', values);
+  };
+
+  
+ 
 
   return (
     <div className={styles.custom_form}>

@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { UserRegisterParams } from './new';
+import { UserRegisterParams } from './index';
 
 // export async function fakeRegister(params: UserRegisterParams) {
 //   return request('/api/register', {
@@ -9,7 +9,7 @@ import { UserRegisterParams } from './new';
 // }
 
 export async function fakeRegister(params: UserRegisterParams) {
-  return request('http://staging.qiuzhi99.com/api/v1/users', {
+  return request('https://redux-login.rails365.net/api/users', {
     method: 'POST',
     data: params,
   });

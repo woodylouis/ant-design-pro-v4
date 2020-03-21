@@ -4,7 +4,6 @@ import App from './App';
 // import serviceWorker from './serviceWorker';
 import { createStore } from 'redux';
 import reducer from './reducers/index';
-import { increment, decrement } from './actions';
 import { Provider } from 'react-redux';
 
 

@@ -5,7 +5,7 @@ import App from './App';
 import { createStore } from 'redux';
 import reducer from './reducers/counter';
 import { increment, decrement } from './actions';
-
+import { Provider } from 'react-redux';
 
 
 const store = createStore(reducer);
@@ -14,11 +14,10 @@ const store = createStore(reducer);
 
 const render = () => {
   ReactDOM.render(
-    <App
-      onIncrement={ () => store.dispatch(increment()) }
-      onDecrement={ () => store.dispatch(decrement()) }
-      value={ store.getState() }
-    />, document.getElementById('root'));
+    <Provider store={ store }>
+      <App store={ store }/>
+    </Provider>, 
+    document.getElementById('root'));
 };
 
 render();

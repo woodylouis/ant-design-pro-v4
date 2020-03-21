@@ -20,8 +20,12 @@ class App extends Component {
 const mapStateToProps = (state) => {
   console.log(state);
   return {
-    counter: state
+    counter: state.counter
   }
+}
+
+App.propTypes = {
+  counter: PropTypes.number.isRequired
 }
 
 export default connect(mapStateToProps)(App);

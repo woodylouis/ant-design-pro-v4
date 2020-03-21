@@ -1,9 +1,13 @@
 import { INCREMENT, DECREMENT } from '../constants';
 
 export const increment = () => {
-  return {
-    type: INCREMENT
-  }
+  return dispatch => {
+    setTimeout(() => {
+      dispatch({
+        type: INCREMENT
+      });
+    }, 2000);
+  };
 };
 
 export const decrement = () => {

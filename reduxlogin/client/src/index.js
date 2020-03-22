@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import './index.css';
-import App from './App';
+import App from './components/App';
+import NavigationBar from './components/NavigationBar';
 import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -9,6 +10,8 @@ import rootReducer from './reducers';
 import logger from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
+import { BrowserRouter as Router} from 'react-router-dom';
+import routes from './routers';
 
 const store = createStore(
   rootReducer,
@@ -19,7 +22,13 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={ store }>
-    <App />
+    {/* <App /> */}
+    <Router>
+      <div>
+        <NavigationBar />
+        { routes }
+      </div>
+    </Router>
   </Provider>,
   document.getElementById('root')
 );

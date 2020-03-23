@@ -2,6 +2,8 @@ import express from 'express';
 import isEmpty from 'lodash/isEmpty';
 import validator from 'validator';
 
+import User from '../models/user';
+
 let router = express.Router();
 
 const validateInput = (data) => {
@@ -41,6 +43,7 @@ router.post('/', (req, res) => {
     const { errors, isValid } = validateInput(req.body);
 
     if (isValid) {
+      const { username, password, email } = req.body;
       res.json({success: true})
       
     } else {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
+
 class SignupForm extends Component {
   constructor(props) {
     super(props)
@@ -11,7 +11,8 @@ class SignupForm extends Component {
       password: '',
       passwordConfirmation: '',
       errors: {},
-      isLoading: false
+      isLoading: false,
+      invalid: false
     }
   }
 
@@ -21,7 +22,8 @@ class SignupForm extends Component {
 
   static propTypes = {
     userSignupRequest: PropTypes.func.isRequired,
-    addFlashMessage: PropTypes.func.isRequired
+    addFlashMessage: PropTypes.func.isRequired,
+    isUserExists: PropTypes.func.isRequired
   }
 
   onChange = (e) => {
@@ -37,10 +39,30 @@ class SignupForm extends Component {
           type: "success",
           text: "You signed up successfully. welcome"
         })
-        this.props.history.push('/');
+        this.context.router.history.push('/');
       },
       ({ response }) => { this.setState({ errors: response.data, isLoading: false }) }
     );
+  }
+
+  checkUserExists = (e) => {
+    const field = e.target.name;
+    const val = e.target.value;
+    if (val !== '') {
+      this.props.isUserExists(val).then(res => {
+        let errors = this.state.errors;
+        let invalid;
+        if (res.data.user) {
+          errors[field] = "There is user with such " + field;
+          invalid = true;
+        } else {
+          errors[field] = '';
+          invalid = false
+        }
+
+        this.setState({ errors, invalid });
+      });
+    }
   }
 
   render() {
@@ -57,6 +79,7 @@ class SignupForm extends Component {
             onChange={ this.onChange }
             type="text"
             name="username"
+            onBlur={ this.checkUserExists }
             className={ classnames('form-control', { 'is-invalid': errors.username }) }
           />
           { errors.username && <span className='form-text text-muted'>{ errors.username }</span> }
@@ -70,6 +93,7 @@ class SignupForm extends Component {
             onChange={ this.onChange }
             type="email"
             name="email"
+            onBlur={ this.checkUserExists }
             className={ classnames('form-control', { 'is-invalid': errors.email }) }
           />
           { errors.email && <span className='form-text text-muted'>{ errors.email }</span> }
@@ -102,7 +126,7 @@ class SignupForm extends Component {
         </div>
 
         <div className="form-group">
-          <button disabled={ this.state.isLoading } className="btn btn-primary btn-lg">
+          <button disabled={ this.state.isLoading || this.state.invalid } className="btn btn-primary btn-lg">
             Sign up
           </button>
         </div>
@@ -111,4 +135,4 @@ class SignupForm extends Component {
   }
 }
 
-export default withRouter(SignupForm);
+export default SignupForm;

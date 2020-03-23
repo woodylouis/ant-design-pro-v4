@@ -4,18 +4,21 @@ import PropTypes from 'prop-types';
 
 import SignupForm from './SignupForm';
 import { userSignupRequest } from '../../actions/signupActions';
+import { addFlashMessage } from '../../actions/flashMessages';
 
 class SignupPage extends Component {
   static propTypes = {
-    userSignupRequest: PropTypes.func.isRequired
+    userSignupRequest: PropTypes.func.isRequired,
+    addFlashMessage: PropTypes.func.isRequired
   }
 
   render() {
+    const { addFlashMessage, userSignupRequest } = this.props;
     return (
       <div className="row">
         <div className="col-md-3"></div>
         <div className="col-md-6">
-          <SignupForm history={ this.props.history } userSignupRequest={ this.props.userSignupRequest } />
+          <SignupForm addFlashMessage={ addFlashMessage } userSignupRequest={ userSignupRequest } />
         </div>
         <div className="col-md-3"></div>
       </div>
@@ -23,4 +26,4 @@ class SignupPage extends Component {
   }
 }
 
-export default connect(null, { userSignupRequest })(SignupPage);
+export default connect(null, { userSignupRequest, addFlashMessage })(SignupPage);

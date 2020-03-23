@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
+import { withRouter } from 'react-router-dom';
 class SignupForm extends Component {
   constructor(props) {
     super(props)
@@ -102,4 +102,4 @@ class SignupForm extends Component {
   }
 }
 
-export default SignupForm;
+export default withRouter(SignupForm);
